@@ -30,7 +30,7 @@ class StartScreen extends StatelessWidget {
           const Text(
             'Benvenuti nel Quiz!',
             style: TextStyle(
-              color: Colors.purpleAccent,
+              color: Color.fromARGB(255, 240, 238, 241),
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),

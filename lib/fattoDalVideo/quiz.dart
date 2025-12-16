@@ -67,12 +67,22 @@ class _QuizState extends State<Quiz> {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 74, 34, 143),
-                Color.fromARGB(255, 12, 43, 220),
+                Color(0xFF000000),
+                Color(0xFF8B0000),
+                Color(0xFFFF0033),
+                Color(0xFF8B0000),
+                Color(0xFF000000),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFFB00020),
+                blurRadius: 20,
+                spreadRadius: 5,
+              ),
+            ],
           ),
           //Il widget Center che abbiamo implementato nella clase StrartScreen
           //posiziona il testo al centro, e occupa tutto lo spazio disponibile
