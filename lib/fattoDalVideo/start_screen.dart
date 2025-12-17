@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StartScreen extends StatelessWidget {
   //nel costruttore definiamo un parametro di tipo Function
@@ -27,13 +28,14 @@ class StartScreen extends StatelessWidget {
             color: Color.fromARGB(128, 250, 250, 250),
           ),
           SizedBox(height: 80),
-          const Text(
+          Text(
             'Benvenuti nel Quiz!',
-            style: TextStyle(
-              color: Color.fromARGB(255, 240, 238, 241),
-              fontSize: 24,
+            style: GoogleFonts.nosifer(
+              color: const Color.fromARGB(255, 240, 238, 241),
+              fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: 30),
           //qui aggiungiamo il bottone OutlinedButton, un bottone con bordo
@@ -49,12 +51,34 @@ class StartScreen extends StatelessWidget {
             //Questo è un esempio di "callback": il bottone non sa cosa deve fare,
             //ma chiama la funzione che gli è stata fornita dal widget genitore.
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.deepOrangeAccent,
+              foregroundColor:
+                  Colors.deepOrangeAccent, // colore del testo/icona
+              side: const BorderSide(
+                // bordo arancione
+                color: Colors.deepOrangeAccent,
+                width: 2,
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 30),
+              textStyle: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.5,
+              ),
             ),
+
             //Icon è un widget che serve per mostrare un'icona all'interno dell'app
             //si può usare anche al di fuori di un bottone, ma è molto comune usarlo nei bottoni
             icon: const Icon(Icons.arrow_right_alt),
-            label: const Text('Start Quiz'),
+            label: Text(
+              'Start Quiz',
+              style: GoogleFonts.creepster(
+                textStyle: const TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepOrangeAccent,
+                ),
+              ),
+            ),
           ),
         ],
       ),

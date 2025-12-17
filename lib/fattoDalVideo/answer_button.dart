@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // Definiamo un widget personalizzato chiamato AnswerButton.
 //Estende StatelessWidget perché non ha stato interno da gestire.
@@ -22,11 +23,11 @@ class AnswerButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onTap, //Quando premuto, esegue la funzione passata
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 40),
         backgroundColor: const Color(0xFF000000),
         foregroundColor: const Color.fromARGB(255, 255, 254, 255),
-        textStyle: const TextStyle(
-          fontSize: 18,
+        textStyle: GoogleFonts.creepster(
+          fontSize: 23,
           fontWeight: FontWeight.bold,
           letterSpacing: 1.5,
         ),

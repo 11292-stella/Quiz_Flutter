@@ -3,10 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:adv_basics/fattoDalVideo/answer_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-//anche questo widget che mostrerà le domande del quiz è uno StatefulWidget,
-//perchè in futuro dovrà aggiornarsi quando l'utente risponderà alle domande
+// Dichiarazione della classe QuestionsScreen.
+// Estende StatefulWidget perché la schermata delle domande
+// deve poter gestire e aggiornare il proprio stato (es. risposte selezionate).
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key});
+  // Costruttore della classe QuestionsScreen.
+  // Usa la sintassi delle "named parameters" (parametri nominati).
+  // super.key serve per passare la chiave al costruttore della classe padre (StatefulWidget).
+  // required this.onSelectAnswer significa che il parametro onSelectAnswer
+  // è obbligatorio quando creiamo un oggetto QuestionsScreen.
+  const QuestionsScreen({super.key, required this.onSelectAnswer});
+
+  // Dichiarazione di un campo (variabile) della classe.
+  // onSelectAnswer è una funzione che riceve una String (la risposta scelta).
+  // In pratica, questo è un "callback": QuestionsScreen non decide da solo cosa fare,
+  // ma chi lo crea (il genitore, cioè Quiz) gli passa una funzione da chiamare
+  // quando l'utente seleziona una risposta.
+  final void Function(String answer) onSelectAnswer;
 
   @override
   State<QuestionsScreen> createState() {
@@ -17,7 +30,8 @@ class QuestionsScreen extends StatefulWidget {
 class _QuestionsScreenState extends State<QuestionsScreen> {
   var currentQuestionIndex = 0;
 
-  void answerQuestion() {
+  void answerQuestion(String selectedAnswer) {
+    widget.onSelectAnswer(selectedAnswer);
     // currentQuestionIndex = currentQuestionIndex +1;
     //currentQuestionIndex += 1;
     setState(() {
@@ -43,8 +57,12 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           children: [
             Text(
               currentQuestion.text,
-              style: GoogleFonts.creepster(
-                textStyle: const TextStyle(color: Colors.white, fontSize: 26),
+              style: GoogleFonts.nosifer(
+                textStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               textAlign: TextAlign.center,
             ),
@@ -61,7 +79,12 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             //Serve a "espandere" un Iterable o una lista dentro un'altra lista.
             //“spalma” il risultato di map dentro la lista dei widget, così ogni bottone diventa un figlio del Column.
             ...currentQuestion.getShuffledAnswers().map((answer) {
-              return AnswerButton(answerText: answer, onTap: answerQuestion);
+              return AnswerButton(
+                answerText: answer,
+                onTap: () {
+                  answerQuestion(answer);
+                },
+              );
             }),
 
             //Qui usiamo AnswerButton widget
