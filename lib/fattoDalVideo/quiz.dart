@@ -2,6 +2,7 @@ import 'package:adv_basics/fattoDalVideo/data/questions.dart';
 import 'package:adv_basics/fattoDalVideo/questions_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:adv_basics/fattoDalVideo/start_screen.dart';
+import 'package:adv_basics/fattoDalVideo/results_screen.dart';
 
 // La classe Quiz estende StatefulWidget perché dobbiamo cambiare schermata
 // quando l'utente preme il bottone "Start Quiz".
@@ -40,7 +41,7 @@ class _QuizState extends State<Quiz> {
 
     if (selectedAnswers.length == questions.length) {
       setState(() {
-        activeScreen = 'start-screen';
+        activeScreen = 'results-screen';
       });
     }
   }
@@ -57,6 +58,12 @@ class _QuizState extends State<Quiz> {
     // allora sostituiamo StartScreen con QuestionsScreen.
     if (activeScreen == 'questions-screen') {
       screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
+    }
+
+    // qui ora che abbiamo creato la schermata che contiene le risposte date 'results-screen'
+    //la mostriamo a fine risposte al posto della schermata iniziale
+    if (activeScreen == 'results-screen') {
+      screenWidget = ResultsScreen(chosenAnswer: selectedAnswers);
     }
 
     // MaterialApp è il contenitore principale dell'app.
