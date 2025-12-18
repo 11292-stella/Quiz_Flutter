@@ -1,11 +1,18 @@
+// Import dei file locali e delle librerie necessarie.
+// - questions.dart: contiene la lista di domande e risposte.
+// - questions_screen.dart: widget che mostra le domande.
+// - start_screen.dart: widget iniziale con il pulsante "Start Quiz".
+// - results_screen.dart: widget finale che mostra i risultati.
+// - flutter/material.dart: libreria base per costruire UI con Material Design.
 import 'package:adv_basics/fattoDalVideo/data/questions.dart';
 import 'package:adv_basics/fattoDalVideo/questions_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:adv_basics/fattoDalVideo/start_screen.dart';
 import 'package:adv_basics/fattoDalVideo/results_screen.dart';
 
-// La classe Quiz estende StatefulWidget perché dobbiamo cambiare schermata
-// quando l'utente preme il bottone "Start Quiz".
+/// Widget principale dell'app.
+/// Estende StatefulWidget perché l'interfaccia deve cambiare dinamicamente
+/// (da schermata iniziale → domande → risultati).
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
 
@@ -15,27 +22,33 @@ class Quiz extends StatefulWidget {
   }
 }
 
+/// Classe di stato associata a Quiz.
+/// Qui gestiamo quale schermata mostrare e le risposte selezionate.
 class _QuizState extends State<Quiz> {
-  // Variabile di stato che indica quale schermata mostrare.
-  // Inizialmente è "start-screen", poi diventa "questions-screen"
-  // quando l'utente avvia il quiz.
+  /// Variabile che indica quale schermata è attiva.
+  /// Possibili valori:
+  /// - "start-screen"
+  /// - "questions-screen"
+  /// - "results-screen"
   var activeScreen = 'start-screen';
 
-  //creiamo la variabile List che conterrà le risposte selezionate da un utente
-  //la definiamo final perchè non verrà riassegnata la variabile
-  //ma verrà generata una nuova lista con .add
+  /// Lista che contiene le risposte scelte dall'utente.
+  /// È `final` perché la variabile non viene riassegnata,
+  /// ma la lista può essere modificata con `.add()`.
   final List<String> selectedAnswers = [];
 
-  // Funzione che cambia lo stato da "start-screen" a "questions-screen".
-  // setState ricostruisce la UI mostrando la nuova schermata.
+  /// Funzione che passa dalla schermata iniziale a quella delle domande.
+  /// `setState()` ricostruisce la UI mostrando il nuovo widget.
   void switchScreen() {
     setState(() {
       activeScreen = 'questions-screen';
     });
   }
 
-  //andiamo a creare il metodo che con .add anserirà le risposte nella
-  //variabile lista creata "selectedAnswers"
+  /// Funzione chiamata ogni volta che l'utente seleziona una risposta.
+  /// - Aggiunge la risposta alla lista `selectedAnswers`.
+  /// - Se il numero di risposte date = numero di domande,
+  ///   cambia schermata e mostra i risultati.
   void chooseAnswer(String answer) {
     selectedAnswers.add(answer);
 
@@ -46,54 +59,60 @@ class _QuizState extends State<Quiz> {
     }
   }
 
+  void restartQuiz() {
+    setState(() {
+      selectedAnswers.clear();
+      activeScreen = 'start-screen';
+    });
+  }
+
   @override
   Widget build(context) {
-    // screenWidget è il widget che verrà mostrato a schermo.
-    // Di default è StartScreen, a cui passiamo la funzione switchScreen
-    // come callback: quando l'utente preme il bottone, StartScreen
-    // invoca switchScreen() e comunica con il genitore.
+    /// Variabile che contiene il widget da mostrare a schermo.
+    /// Di default è StartScreen, a cui passiamo la funzione `switchScreen`
+    /// come callback: quando l'utente preme "Start Quiz", viene chiamata.
     Widget screenWidget = StartScreen(switchScreen);
 
-    // Se la variabile di stato è "questions-screen",
-    // allora sostituiamo StartScreen con QuestionsScreen.
+    // Se siamo nella fase delle domande, mostriamo QuestionsScreen.
     if (activeScreen == 'questions-screen') {
       screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
     }
 
-    // qui ora che abbiamo creato la schermata che contiene le risposte date 'results-screen'
-    //la mostriamo a fine risposte al posto della schermata iniziale
+    // Se tutte le domande sono state risposte, mostriamo ResultsScreen.
     if (activeScreen == 'results-screen') {
-      screenWidget = ResultsScreen(chosenAnswer: selectedAnswers);
+      screenWidget = ResultsScreen(
+        chosenAnswer: selectedAnswers,
+        onRestart: restartQuiz,
+      );
     }
 
-    // MaterialApp è il contenitore principale dell'app.
-    // Scaffold fornisce la struttura base (body, appBar, ecc.).
-    // Dentro body usiamo un Container con sfondo a gradiente
-    // e un'ombra rossa per dare stile.
+    /// MaterialApp: contenitore principale dell'app.
+    /// Scaffold: struttura base (body, appBar, ecc.).
+    /// Container: sfondo con gradiente e ombra rossa per lo stile.
     return MaterialApp(
       home: Scaffold(
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color(0xFF000000),
-                Color(0xFF8B0000),
-                Color(0xFFFF0033),
-                Color(0xFF8B0000),
-                Color(0xFF000000),
+                Color(0xFF000000), // nero
+                Color(0xFF8B0000), // rosso scuro
+                Color(0xFFFF0033), // rosso acceso
+                Color(0xFF8B0000), // rosso scuro
+                Color(0xFF000000), // nero
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             boxShadow: [
               BoxShadow(
-                color: Color(0xFFB00020),
+                color: Color(0xFFB00020), // ombra rossa
                 blurRadius: 20,
                 spreadRadius: 5,
               ),
             ],
           ),
-          // Qui mostriamo lo schermo attivo (StartScreen o QuestionsScreen).
+          // Mostriamo la schermata attiva (Start, Questions o Results).
           child: screenWidget,
         ),
       ),

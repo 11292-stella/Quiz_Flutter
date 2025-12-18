@@ -1,74 +1,90 @@
+// Import della libreria Flutter per i widget Material Design.
 import 'package:flutter/material.dart';
+
+// Import della libreria Google Fonts per usare font personalizzati.
 import 'package:google_fonts/google_fonts.dart';
 
+/// Schermata iniziale del quiz.
+/// Mostra il logo, un titolo e un bottone per avviare il quiz.
+/// È uno StatelessWidget perché non ha stato interno: riceve solo una funzione
+/// dal genitore e la richiama quando serve.
 class StartScreen extends StatelessWidget {
-  //nel costruttore definiamo un parametro di tipo Function
-  //questo ci permette di ricevere una funzione dall'esterno(in questo caso switchScreen)
-  // Usando Function startQuiz, StartScreen può chiamare startQuiz()
-  //void Function()  è il tipo di una funzione che non prende argomenti e non restituisce valori.
-  //È come dire: “Questa variabile conterrà una funzione che fa qualcosa, ma non riceve input e non restituisce output”.
+  /// Costruttore: riceve una funzione `startQuiz` dal widget genitore.
+  /// - `void Function()` significa: funzione che non prende parametri
+  ///   e non restituisce valori.
+  /// - Questo è un esempio di *callback*: StartScreen non sa cosa deve fare,
+  ///   ma chiama la funzione che gli viene passata.
   const StartScreen(this.startQuiz, {super.key});
 
+  /// Variabile che contiene la funzione passata dal genitore.
+  /// Viene usata quando l’utente preme il bottone "Start Quiz".
   final void Function() startQuiz;
 
   @override
   Widget build(context) {
+    // Center: centra il contenuto nello schermo.
+    // Column: impila i widget verticalmente.
     return Center(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min, // occupa solo lo spazio necessario
         children: [
+          // Logo del quiz (immagine locale).
           Image.asset(
             'assets/images/quiz-logo.png',
             width: 300,
-            //per cambiare il colore dell'immagine usiamo Color come per il testo
-            //in questo caso sfruttiamo il colore bianco con trasparenza per rendere l'immagine più trasparente
-            //esiste anche un altro modo per rendere un'immagine trasparente contornando Il widget Image con il widget Opacity,
-            //ma è meno consigliato perche rende trasparente tutto il widget, compreso lo spazio vuoto intorno all'immagine
-            //e in più è meno performante
-            color: Color.fromARGB(128, 250, 250, 250),
+            // Color: applica un filtro colore sull’immagine.
+            // Qui usiamo bianco semi-trasparente per rendere il logo più "ghostly".
+            // Alternativa: widget Opacity, ma meno performante.
+            color: const Color.fromARGB(128, 250, 250, 250),
           ),
-          SizedBox(height: 80),
+
+          const SizedBox(height: 80), // Spazio verticale tra logo e testo.
+          // Titolo del quiz.
           Text(
             'Benvenuti nel Quiz!',
-            style: GoogleFonts.nosifer(
+            style: GoogleFonts.creepster(
               color: const Color.fromARGB(255, 240, 238, 241),
-              fontSize: 30,
+              fontSize: 35,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 30),
-          //qui aggiungiamo il bottone OutlinedButton, un bottone con bordo
-          //dentro il quale mettiamo un'icona con .icon
-          //se aggiungiamo una icona, non accetterà più un child ma una label
-          //label è una proprietà specifica per i bottoni con icona, indica il testo del bottone
+
+          const SizedBox(height: 30), // Spazio tra titolo e bottone.
+          // Bottone con bordo e icona.
           OutlinedButton.icon(
+            // Quando viene premuto, richiama la funzione `startQuiz`.
             onPressed: startQuiz,
 
-            //Qui richiamiamo la funzione startQuiz che è stata passata come parametro al widget StartScreen.
-            //Per poterla usare qui, abbiamo dovuto salvarla in una variabile final (startQuiz),
-            //così da poterla riutilizzare all'interno del bottone.
-            //Questo è un esempio di "callback": il bottone non sa cosa deve fare,
-            //ma chiama la funzione che gli è stata fornita dal widget genitore.
+            // Stile del bottone: colore, bordo, padding, testo.
             style: OutlinedButton.styleFrom(
-              foregroundColor:
-                  Colors.deepOrangeAccent, // colore del testo/icona
+              foregroundColor: const Color.fromARGB(255, 130, 11, 11),
+              backgroundColor: const Color.fromARGB(
+                77,
+                0,
+                0,
+                0,
+              ), // colore testo/icona
               side: const BorderSide(
-                // bordo arancione
-                color: Colors.deepOrangeAccent,
-                width: 2,
+                color: Color.fromARGB(255, 242, 100, 12), // bordo arancione
+                width: 3,
               ),
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 30),
-              textStyle: const TextStyle(
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 36),
+              textStyle: GoogleFonts.creepster(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.5,
               ),
             ),
 
-            //Icon è un widget che serve per mostrare un'icona all'interno dell'app
-            //si può usare anche al di fuori di un bottone, ma è molto comune usarlo nei bottoni
-            icon: const Icon(Icons.arrow_right_alt),
+            // Icona a destra del testo.
+            icon: const Icon(
+              Icons.play_arrow_rounded,
+              size: 28,
+              color: Colors.white,
+            ),
+
+            // Testo del bottone con font personalizzato.
             label: Text(
               'Start Quiz',
               style: GoogleFonts.creepster(
